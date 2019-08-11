@@ -1,0 +1,59 @@
+points:
+  - A
+  - B
+  - C
+  - D
+  - E
+  - F
+
+segments:
+  - BE
+  - BC
+  - CD
+  - DA
+  - CE
+
+relations:
+  - op: co_linear
+    elements:
+      - A
+      - F
+      - D
+  - op: co_linear
+    elements:
+      - C
+      - F
+      - E
+  - op: co_linear
+    elements:
+      - E
+      - A
+      - B
+
+alias_map:
+  - type: angle
+    name: ECD
+    alias: "1"
+  - type: angle
+    name: DFC
+    alias: "2"
+  - type: angle
+    name: EAD
+    alias: "3"
+  - type: angle
+    name: BCE
+    alias: "4"
+
+explicit_info:
+  - operator: eq
+    elements:
+      - "1"
+      - "2"
+  - operator: assign
+    elements:
+      - 40
+      - "3"
+  - operator: assign
+    elements:
+      - 140
+      - BCD
