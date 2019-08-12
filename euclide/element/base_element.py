@@ -1,5 +1,5 @@
 class BaseElement:
-    def __init__(self, symbol, explicit=True, alias=None, hooks=set()):
+    def __init__(self, symbol, explicit=True, alias=None, hooks={}):
         if not isinstance(symbol, str):
             raise Exception("symbol of element must be string")
         elif not symbol.isalpha():
@@ -17,4 +17,8 @@ class BaseElement:
         return self.__class__.__name__ + ': ' + self.name
 
     def hook_graph(self, graph):
-        self.hooks.add(graph)
+        g_name = graph.name
+        if not g_name in self.hooks.keys():
+            self.hooks[g_name] = graph
+        else:
+            raise Exception('hook already existed')

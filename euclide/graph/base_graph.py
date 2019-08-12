@@ -15,9 +15,9 @@ class BaseGraph(object):
             raise Exception('element must be point, segment...')
 
         existing_ids = self.context.keys()
-        exception_template = '''{} already existed, cannot overide
-        it with another object, if you want to update an existing 
-        element, use update(wip)'''
+        exception_template = ('{} already existed, cannot overide
+                              it with another object, if you want to update 
+                              an existing element, use update(wip)')
 
         element_info = (element.__class__.__name__, element)
         e_name = element.name

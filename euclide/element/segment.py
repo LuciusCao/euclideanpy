@@ -3,7 +3,7 @@ from .point import Point
 
 
 class Segment(BaseElement):
-    def __init__(self, tuple_of_points, explicit=True, alias=None, length=None, hooks=set()):
+    def __init__(self, tuple_of_points, explicit=True, alias=None, length=None, hooks={}):
         if len(tuple_of_points) != 2:
             raise Exception("A Segment must be represented by two points")
         self.points = tuple_of_points

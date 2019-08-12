@@ -3,7 +3,7 @@ from .point import Point
 
 
 class Line(BaseElement):
-    def __init__(self, tuple_of_points, explicit=True, alias=None, hooks=set()):
+    def __init__(self, tuple_of_points, explicit=True, alias=None, hooks={}):
         if len(tuple_of_points) != 2:
             raise Exception("A Line must be represented by two letters")
         self.points = tuple_of_points
