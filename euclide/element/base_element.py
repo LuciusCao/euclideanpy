@@ -1,5 +1,5 @@
-class BaseElement:
-    def __init__(self, symbol, explicit=True, alias=None, hooks={}):
+class BaseElement(object):
+    def __init__(self, symbol, explicit=True, alias=None, hook=None):
         if not isinstance(symbol, str):
             raise Exception("symbol of element must be string")
         elif not symbol.isalpha():
@@ -11,14 +11,14 @@ class BaseElement:
         self.name = symbol
         self.explicit = explicit
         self.alias = alias
-        self.hooks = hooks
+        self.hook = hook
 
     def __repr__(self):
         return self.__class__.__name__ + ': ' + self.name
 
-    def hook_graph(self, graph):
+    def _hook_graph(self, graph):
         g_name = graph.name
-        if not g_name in self.hooks.keys():
-            self.hooks[g_name] = graph
+        if g_name != self.hook:
+            self.hook = graph
         else:
-            raise Exception('hook already existed')
+            raise Exception('{}: hook already existed'.format(self.name))
