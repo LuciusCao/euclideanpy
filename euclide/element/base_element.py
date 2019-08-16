@@ -1,12 +1,5 @@
 class BaseElement(object):
     def __init__(self, symbol, explicit=True, alias=None, hook=None):
-        if not isinstance(symbol, str):
-            raise Exception("symbol of element must be string")
-        elif not symbol.isalpha():
-            raise Exception("symbol must be represented as a letter")
-
-        if (not alias is None) and (not isinstance(alias, str)):
-            raise Exception("alias must be string")
 
         self.name = symbol
         self.explicit = explicit
