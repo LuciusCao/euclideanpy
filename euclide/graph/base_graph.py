@@ -1,7 +1,7 @@
 from ..element.point import Point
 from ..element.segment import Segment
 from ..element.line import Line
-from ..utils import (
+from ..validations import (
     point_validation,
     segment_validation
 )
@@ -51,7 +51,7 @@ class BaseGraph(object):
             else:
                 raise Exception(exception_msg)
 
-    def extend_registry(self):
+    def compute_graph(self):
         pass
 
     def add_point(self, point_name):
@@ -70,11 +70,12 @@ class BaseGraph(object):
         _ = segment_validation(segment_name)
 
         if len(segment_name) == 2:
-            points = (v for k,v in self.registry.items() if k[0] == 'Point')
+            points = (v for k, v in self.registry.items() if k[0] == 'Point')
             points_map = {p.name: p for p in points}
 
             endpoints = [segment_name[0], segment_name[1]]
-            endpoints_exists = [edpt in points_map.keys() for edpt in endpoints]
+            endpoints_exists = [edpt in points_map.keys()
+                                for edpt in endpoints]
 
             if all(endpoints_exists):
                 segment = Segment(segment_name)
@@ -91,7 +92,7 @@ class BaseGraph(object):
         '''
         line_name: the name of the line defined in the problem e.g. AB
         '''
-        points = (v for k,v in self.registry.items() if k[0] == 'Point')
+        points = (v for k, v in self.registry.items() if k[0] == 'Point')
         points_map = {p.name: p for p in points}
 
         endpoints = [line_name[0], line_name[1]]

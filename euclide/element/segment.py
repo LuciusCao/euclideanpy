@@ -1,10 +1,10 @@
 from .base_element import BaseElement
-from ..utils import segment_validation
+from ..validations import segment_validation
 
 
 class Segment(BaseElement):
     def __init__(self, symbol, explicit=True, alias=None, length=None, hook=None):
-        _ =  segment_validation(symbol)
+        _ = segment_validation(symbol)
 
         super().__init__(symbol, explicit=explicit, alias=None, hook=hook)
 

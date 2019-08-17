@@ -1,5 +1,5 @@
 from .base_element import BaseElement
-from ..utils import point_validation
+from ..validations import point_validation
 
 
 class Point(BaseElement):
