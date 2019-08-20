@@ -17,6 +17,7 @@ class BaseGraph(object):
     def __init__(self, name):
         self.name = name
         self.registry = {}
+        self.relation = {'co_linear': None}
 
     def __repr__(self):
         return self.__class__.__name__ + ': ' + self.name
@@ -31,6 +32,7 @@ class BaseGraph(object):
         e_name = element.name
         e_alias = element.alias
 
+        # register name
         key = (element.__class__.__name__, e_name)
         if key not in existing_ids:
             self.registry[key] = element
@@ -38,6 +40,7 @@ class BaseGraph(object):
         else:
             print(warning_template.format(e_name))
 
+        # register alias
         key = (element.__class__.__name__, e_alias)
         if (not e_alias is None) and (not e_alias == e_name):
             if key not in existing_ids:
@@ -45,6 +48,7 @@ class BaseGraph(object):
             else:
                 print(warning_template.format(e_alias))
 
+        # register reverse name
         if 'reversed_name' in element.__dict__.keys():
             e_rname = element.reversed_name
             key = (element.__class__.__name__, e_rname)
@@ -168,13 +172,35 @@ class BaseGraph(object):
                 point_1 = seg_1.replace(angle_point, '')
                 point_2 = seg_2.replace(angle_point, '')
 
-                angle_points.append(angle_point)
-                angle_list.append(point_1 + angle_point + point_2)
+                angle_name = point_1 + angle_point + point_2
+                angle_name_set = set(angle_name)
+
+                if self.relation['co_linear'] is None:
+                    angle_points.append(angle_point)
+                    angle_list.append(angle_name)
+                else:
+                    co_linear_set = [set(elem)
+                                     for elem in self.relation['co_linear']]
+                    is_valid_name = not any(
+                        angle_name_set == elem for elem in co_linear_set)
+
+                    if is_valid_name:
+                        angle_points.append(angle_point)
+                        angle_list.append(angle_name)
+                    else:
+                        print(
+                            'Dropping {}, because of co_linearity'.format(angle_name))
 
         angle_points_counter = Counter(angle_points)
         single_angle_points = [
             k for k, v in angle_points_counter.items() if v == 1]
 
         angle_list += single_angle_points
+
+        # remove already identified angles in registry
+        existing_angles = set(self._filter_registry_key(Angle))
+        angle_set = set(angle_list)
+
+        angle_set = angle_set.difference(existing_angles)
 
         return angle_list

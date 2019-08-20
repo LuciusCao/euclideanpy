@@ -49,9 +49,6 @@ def graph2d_from_yaml(file_path, name='graph'):
     except KeyError:
         print('angles not defined in problem, skipping ...')
 
-    print('**********')
-    print(graph.identify_angles())
-    print('**********')
     for angle in graph.identify_angles():
         graph.add_angle(angle)
 
@@ -63,6 +60,7 @@ def graph2d_from_yaml(file_path, name='graph'):
             for combo in combos:
                 seg_name = "".join(combo)
                 graph.add_segment(seg_name)
+        graph.relation['co_linear'] = segments
     except KeyError:
         print('segments not defined in problem, skipping ...')
 
