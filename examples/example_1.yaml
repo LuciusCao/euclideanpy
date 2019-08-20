@@ -10,8 +10,13 @@ segments:
   - BE
   - BC
   - CD
-  - DA
+  - AD
   - CE
+
+co_linear:
+  - AFD
+  - EFC
+  - EAB
 
 relations:
   - op: co_linear

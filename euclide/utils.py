@@ -1,7 +1,10 @@
+import yaml
+
+from itertools import combinations
+
 from .element.point import Point
 from .element.segment import Segment
 from .graph.graph2D import Graph2D
-import yaml
 
 
 def graph2d_from_yaml(file_path, name='graph'):
@@ -37,5 +40,33 @@ def graph2d_from_yaml(file_path, name='graph'):
             graph.add_line(l)
     except KeyError:
         print('lines not defined in problem, skipping ...')
+
+    try:
+        angles = data['angles']
+        print('Registering angles: ', angles)
+        for a in angles:
+            graph.add_angle(a)
+    except KeyError:
+        print('angles not defined in problem, skipping ...')
+
+    print('**********')
+    print(graph.identify_angles())
+    print('**********')
+    for angle in graph.identify_angles():
+        graph.add_angle(angle)
+
+    try:
+        segments = data['co_linear']
+        print('Registering co-linear segments: ', segments)
+        for s in segments:
+            combos = combinations(list(s), 2)
+            for combo in combos:
+                seg_name = "".join(combo)
+                graph.add_segment(seg_name)
+    except KeyError:
+        print('segments not defined in problem, skipping ...')
+
+    for angle in graph.identify_angles():
+        graph.add_angle(angle)
 
     return graph

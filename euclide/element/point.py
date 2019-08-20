@@ -9,4 +9,5 @@ class Point(BaseElement):
         super().__init__(symbol, explicit=explicit, alias=alias, hook=hook)
 
         self.name = symbol.upper()
+        self.symbol = symbol.upper()
         self.coordinates = coordinates

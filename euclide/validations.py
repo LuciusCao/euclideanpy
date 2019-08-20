@@ -17,8 +17,23 @@ def segment_validation(symbol):
     _ = symbol_validation(symbol)
     if not symbol.isalpha():
         raise Exception("A Segment must be represented by letters")
-    elif len(symbol) >= 3:
+    if len(symbol) >= 3:
         raise Exception(
-            "A Segment must be represented by 2 capital letters or 1 lower letter")
+            "A Segment must be represented by 2 uppercase letters or 1 lowercase letter")
 
     return True
+
+
+def angle_validation(symbol):
+    _ = symbol_validation(symbol)
+    if (len(symbol) == 3) and (symbol.isalpha()):
+        return True
+    elif (len(symbol) == 1) and(symbol.isalpha()):
+        return True
+    elif (len(symbol) == 1) and (symbol.isnumeric()):
+        return True
+    else:
+        raise Exception(
+            "An angle must be represented by 1 or 3 letters or 1 digits")
+
+    return False

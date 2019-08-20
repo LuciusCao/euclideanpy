@@ -1,4 +1,5 @@
 from .base_element import BaseElement
+from .point import Point
 from ..validations import segment_validation
 
 
@@ -10,6 +11,16 @@ class Segment(BaseElement):
 
         if len(symbol) == 1:
             self.name = symbol.lower()
-        if len(symbol) == 2:
+            self.symbol = symbol.lower()
+        elif len(symbol) == 2:
             self.name = symbol.upper()
+            self.symbol = symbol.upper()
             self.reversed_name = self.name[::-1]
+
+        self.points = []
+
+    def append_point(self, point):
+        if not isinstance(point, Point):
+            raise Exception('point must be an instance of Point')
+
+        self.points.append(point)
