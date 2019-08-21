@@ -8,7 +8,7 @@ from .graph.graph2D import Graph2D
 
 
 def find_longest_segment(segment_name):
-    return segment_name[0] + segment_name[1]
+    return segment_name[0] + segment_name[-1]
 
 def graph2d_from_yaml(file_path, name='graph'):
     graph = Graph2D(name)
@@ -49,7 +49,9 @@ def graph2d_from_yaml(file_path, name='graph'):
     try:
         segments = data['segments']
         longest_segments = [find_longest_segment(s) for s in segments]
-        graph.relations['co_linear'] += [s for s in segments if len(s) >= 3]
+        # also if length of segment is gte 3, then it is becuase certain
+        # poinits are co-linear
+        co_linear += [s for s in segments if len(s) >= 3]
         print('Registering longest segments: ', longest_segments)
         for s in longest_segments:
             graph.add_segment(s)
@@ -86,6 +88,7 @@ def graph2d_from_yaml(file_path, name='graph'):
     try:
         colinear_segments = graph.relations['co_linear'] + co_linear
         colinear_segments = list(set(colinear_segments))
+        graph.relations['co_linear'] = colinear_segments
         print('Registering co-linear segments: ', colinear_segments)
         for s in colinear_segments:
             combos = combinations(list(s), 2)

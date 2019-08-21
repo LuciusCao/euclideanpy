@@ -180,7 +180,10 @@ class BaseGraph(object):
                 angle_name = point_1 + angle_point + point_2
                 angle_name_set = set(angle_name)
 
-                if self.relations['co_linear'] is None:
+                # if co_linear information are not set properly
+                # co_linear angles may be accidentally identified
+                # right now, a 180 angle is ignored here
+                if len(self.relations['co_linear']) == 0:
                     angle_points.append(angle_point)
                     angle_list.append(angle_name)
                 else:
