@@ -28,9 +28,11 @@ class Angle(BaseElement):
             raise Exception('point must be an instance of Point')
 
         self.points.append(point)
+        return self.points
 
     def append_segment(self, segment):
         if not isinstance(segment, Segment):
             raise Exception('segment must be an instance of Segment')
 
         self.segments.append(segment)
+        return self.segments

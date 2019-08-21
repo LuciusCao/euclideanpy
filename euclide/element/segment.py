@@ -4,10 +4,10 @@ from ..validations import segment_validation
 
 
 class Segment(BaseElement):
-    def __init__(self, symbol, explicit=True, alias=None, length=None, hook=None):
+    def __init__(self, symbol, explicit=True, length=None, hook=None):
         _ = segment_validation(symbol)
 
-        super().__init__(symbol, explicit=explicit, alias=None, hook=hook)
+        super().__init__(symbol, explicit=explicit, hook=hook)
 
         if len(symbol) == 1:
             self.name = symbol.lower()
@@ -24,3 +24,4 @@ class Segment(BaseElement):
             raise Exception('point must be an instance of Point')
 
         self.points.append(point)
+        return self.points

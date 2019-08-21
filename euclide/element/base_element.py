@@ -2,13 +2,12 @@ from ..validations import symbol_validation
 
 
 class BaseElement(object):
-    def __init__(self, symbol, explicit=True, alias=None, hook=None):
+    def __init__(self, symbol, explicit=True, hook=None):
         _ = symbol_validation(symbol)
 
         self.symbol = symbol
         self.name = symbol
         self.explicit = explicit
-        self.alias = alias
         self.hook = hook
 
     def __repr__(self):

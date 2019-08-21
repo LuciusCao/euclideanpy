@@ -1,9 +1,23 @@
+points:
+  - A
+  - B
+  - C
+  - D
+  - E
+  - F
+
 segments:
   - EAB
   - BC
   - CD
   - AFD
   - EFC
+
+relations:
+  co_linear:
+    - AFD
+    - EFC
+    - EAB
 
 alias:
   - type: angle

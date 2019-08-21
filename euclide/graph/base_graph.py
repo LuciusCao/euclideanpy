@@ -17,7 +17,7 @@ class BaseGraph(object):
     def __init__(self, name):
         self.name = name
         self.registry = {}
-        self.relation = {'co_linear': None}
+        self.relations = {'co_linear': []}
 
     def __repr__(self):
         return self.__class__.__name__ + ': ' + self.name
@@ -27,10 +27,9 @@ class BaseGraph(object):
             raise Exception('element must be point, segment...')
 
         existing_ids = self.registry.keys()
-        warning_template = '{} already existed, cannot overide it with another object'
+        warning_template = '{} {} already existed, cannot overide it with another object'
 
         e_name = element.name
-        e_alias = element.alias
 
         # register name
         key = (element.__class__.__name__, e_name)
@@ -38,15 +37,7 @@ class BaseGraph(object):
             self.registry[key] = element
             element.hook_graph(self)
         else:
-            print(warning_template.format(e_name))
-
-        # register alias
-        key = (element.__class__.__name__, e_alias)
-        if (not e_alias is None) and (not e_alias == e_name):
-            if key not in existing_ids:
-                self.registry[key] = element
-            else:
-                print(warning_template.format(e_alias))
+            print(warning_template.format(*key))
 
         # register reverse name
         if 'reversed_name' in element.__dict__.keys():
@@ -55,9 +46,9 @@ class BaseGraph(object):
             if key not in existing_ids:
                 self.registry[key] = element
             else:
-                print(warning_template.format(e_rname))
+                print(warning_template.format(*key))
 
-        return element.name
+        return key
 
     def _filter_registry_key(self, cls):
         elem_type = cls.__name__
@@ -69,8 +60,22 @@ class BaseGraph(object):
         elems = (v.name for k, v in self.registry.items() if k[0] == elem_type)
         return elems
 
-    def compute_graph(self):
-        pass
+    def get_element(self, elem_type, name):
+        key = (elem_type.capitalize(), name)
+        try:
+            return self.registry[key]
+        except KeyError:
+            return None
+
+    def alias_element(self, element, alias):
+        warning_template = '{} {} already existed, cannot overide it with another object'
+        key = (element.__class__.__name__, alias)
+        if key not in self.registry.keys():
+            self.registry[key] = element
+        else:
+            print(warning_template.format(*key))
+        return key
+
 
     def add_point(self, point_name):
         '''
@@ -175,12 +180,12 @@ class BaseGraph(object):
                 angle_name = point_1 + angle_point + point_2
                 angle_name_set = set(angle_name)
 
-                if self.relation['co_linear'] is None:
+                if self.relations['co_linear'] is None:
                     angle_points.append(angle_point)
                     angle_list.append(angle_name)
                 else:
                     co_linear_set = [set(elem)
-                                     for elem in self.relation['co_linear']]
+                                     for elem in self.relations['co_linear']]
                     is_valid_name = not any(
                         angle_name_set == elem for elem in co_linear_set)
 
@@ -189,7 +194,7 @@ class BaseGraph(object):
                         angle_list.append(angle_name)
                     else:
                         print(
-                            'Dropping {}, because of co_linearity'.format(angle_name))
+                            'Dropping angle {}, because of co_linearity'.format(angle_name))
 
         angle_points_counter = Counter(angle_points)
         single_angle_points = [
